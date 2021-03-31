@@ -4,18 +4,18 @@
 #include <math.h>
 #include <conio.h>
 #include <string.h>
-//int n=300;//ÎïÆ·ÊıÁ¿
-//double c;//±³°üÈİÁ¿
-//int v[300];//¸÷¸öÎïÆ·µÄ¼ÛÖµ
-//int w[300];//¸÷¸öÎïÆ·µÄÖØÁ¿
-//double cw = 0.0;//µ±Ç°±³°üÖØÁ¿
-//double cp = 0.0;//µ±Ç°±³°üÖĞÎïÆ·¼ÛÖµ
-//double bestp = 0.0;//µ±Ç°×îÓÅ¼ÛÖµ
-//double perp[100];//µ¥Î»ÎïÆ·¼ÛÖµÅÅĞòºó
-//int order[100];//ÎïÆ·±àºÅ
-//int put[100];//ÉèÖÃÊÇ·ñ×°Èë
-/*
-//°´µ¥Î»¼ÛÖµÅÅĞò
+//int n=300;//ç‰©å“æ•°é‡
+//double c;//èƒŒåŒ…å®¹é‡
+//int v[300];//å„ä¸ªç‰©å“çš„ä»·å€¼
+//int w[300];//å„ä¸ªç‰©å“çš„é‡é‡
+//double cw = 0.0;//å½“å‰èƒŒåŒ…é‡é‡
+//double cp = 0.0;//å½“å‰èƒŒåŒ…ä¸­ç‰©å“ä»·å€¼
+//double bestp = 0.0;//å½“å‰æœ€ä¼˜ä»·å€¼
+//double perp[100];//å•ä½ç‰©å“ä»·å€¼æ’åºå
+//int order[100];//ç‰©å“ç¼–å·
+//int put[100];//è®¾ç½®æ˜¯å¦è£…å…¥
+
+//æŒ‰å•ä½ä»·å€¼æ’åº
 void knapsack()
 {
     int i,j;
@@ -27,7 +27,7 @@ void knapsack()
     for(i=1;i<=n-1;i++)
     {
         for(j=i+1;j<=n;j++)
-            if(perp[i]<perp[j])//Ã°ÅİÅÅĞòperp[],order[],sortv[],sortw[]
+            if(perp[i]<perp[j])//å†’æ³¡æ’åºperp[],order[],sortv[],sortw[]
         {
             temp = perp[i];
             perp[i]=perp[i];
@@ -47,7 +47,7 @@ void knapsack()
         }
     }
 }
-*/
+
 int max(int a,int b)
 {
     if(a>b)
@@ -55,7 +55,7 @@ int max(int a,int b)
     else
         return b;
 }
-//¶¯Ì¬¹æ»®Ëã·¨
+//åŠ¨æ€è§„åˆ’ç®—æ³•
 int Knapsack(int v[],int w[],int n,int C,int x[])
 {
     int V[n+1][C+1];
@@ -82,7 +82,7 @@ int Knapsack(int v[],int w[],int n,int C,int x[])
     }
     return V[n][C];
 }
-//°´Ïî¼¯µÚÈıÏîµÄ¼ÛÖµ:ÖØÁ¿±È½øĞĞ·ÇµİÔöÅÅĞò
+//æŒ‰é¡¹é›†ç¬¬ä¸‰é¡¹çš„ä»·å€¼:é‡é‡æ¯”è¿›è¡Œéé€’å¢æ’åº
 void three(int v[],int w[],int n)
 {
     //int temporder = 0;
@@ -100,7 +100,7 @@ void three(int v[],int w[],int n)
         }
     for(int i=0;i<index;i++)
         for(int j=i+1;j<index;j++)
-            if(perp[i]<perp[j])//Ã°ÅİÅÅĞòperp[],order[],sortv[],sortw[]
+            if(perp[i]<perp[j])//å†’æ³¡æ’åºperp[],order[],sortv[],sortw[]
             {
                 temp = perp[i];
                 perp[i]=perp[j];
@@ -121,50 +121,10 @@ void three(int v[],int w[],int n)
             }
     for(int i=0;i<index;i++)
     {
-        printf("¼ÛÖµ-ÖØÁ¿±È£º%f      ¼ÛÖµ£º%d       ÖØÁ¿£º%d\n",perp[i],vv[i],ww[i]);
+        printf("ä»·å€¼-é‡é‡æ¯”ï¼š%f      ä»·å€¼ï¼š%d       é‡é‡ï¼š%d\n",perp[i],vv[i],ww[i]);
     }
 }
-/*
-//»ØËİº¯Êı
-void backtrack(int i)
-{
-    double bound(int i);
-    if(i>n)
-    {
-        bestp = cp;
-        return;
-    }
-    if(cw+w[i]<=c)
-    {
-        cw+=w[i];
-        cp+=v[i];
-        put[i]=1;
-        backtrack(i+1);
-        cw-=w[i];
-        cp-=v[i];
-    }
-    if(bound(i+1)>bestp)//·ûºÏÌõ¼şËÑË÷ÓÒ×ÓÊı
-        backtrack(i+1);
-}
-
-//¼ÆËãÉÏ½çº¯Êı
-double bound(int i)
-{
-    double leftw= c-cw;
-    double b = cp;
-    while(i<=n&&w[i]<=leftw)
-    {
-        leftw-=w[i];
-        b+=v[i];
-        i++;
-    }
-    if(i<=n)
-        b+=v[i]/w[i]*leftw;
-    return b;
-
-}
-*/
-void char_to_number(char date[],int N,int number[])     //N:Êı×ÖµÄ¸öÊı
+void char_to_number(char date[],int N,int number[])     //N:æ•°å­—çš„ä¸ªæ•°
 {
     int i=0;
     int length = strlen(date);
@@ -206,27 +166,27 @@ int main()
 	char string[M];
 	clock_t start,finish;
 	start=clock();
-	//¶ÁÈ¡¼ÛÖµ
-	printf("ÎïÆ·¼ÛÖµ:\n");
+	//è¯»å–ä»·å€¼
+	printf("ç‰©å“ä»·å€¼:\n");
 	FILE *fp = fopen("C:/Users/Acer/Desktop/test1.txt","r");
-	while( fgets(string, sizeof(string), fp) != NULL )//ÖğĞĞ¶ÁÈ¡Êı¾İ
+	while( fgets(string, sizeof(string), fp) != NULL )//é€è¡Œè¯»å–æ•°æ®
 	{
 		strcpy(date1,string);
 		printf("%s\n",date1);
 	}
 	fclose(fp);
 
-	//¶ÁÈ¡ÖØÁ¿
-	printf("ÎïÆ·ÖØÁ¿:\n");
+	//è¯»å–é‡é‡
+	printf("ç‰©å“é‡é‡:\n");
 	FILE *fp2 = fopen("C:/Users/Acer/Desktop/test2.txt","r");
-	while( fgets(string, sizeof(string), fp) != NULL )//ÖğĞĞ¶ÁÈ¡Êı¾İ
+	while( fgets(string, sizeof(string), fp) != NULL )//é€è¡Œè¯»å–æ•°æ®
 	{
 		strcpy(date2,string);
 		//*r = strtok(date,apart);
 		printf("%s\n",date2);
 	}
 	fclose(fp2);
-	printf("ÇëÊäÈëÎïÆ·µÄÊıÁ¿ºÍÈİÁ¿£º");
+	printf("è¯·è¾“å…¥ç‰©å“çš„æ•°é‡å’Œå®¹é‡ï¼š");
     scanf("%d%d",&n,&C);
     int v[n],w[n];
 	//printf("%c",date2[1]);
@@ -242,16 +202,16 @@ int main()
     }
     int maxV=Knapsack(v,w,n,C,x);
     //backtrack(1);
-    printf("×îÓĞ¼ÛÖµÎª£º%d\n",maxV);
-    printf("ĞèÒª×°ÈëµÄÎïÆ·±àºÅÊÇ£º");
+    printf("æœ€æœ‰ä»·å€¼ä¸ºï¼š%d\n",maxV);
+    printf("éœ€è¦è£…å…¥çš„ç‰©å“ç¼–å·æ˜¯ï¼š");
     for(int i=0;i<n;i++)
     {
         if(x[i]==1)
             printf("%d ",i+1);
     }
     finish=clock();
-    printf("\n»¨·ÑÊ±¼ä: %f",(double)(finish - start) / CLK_TCK);
-    printf("\n°´¼ÛÖµºÍÖØÁ¿µÄ±È£¬·ÇµİÔöÅÅĞò:\n");
+    printf("\nèŠ±è´¹æ—¶é—´: %f",(double)(finish - start) / CLK_TCK);
+    printf("\næŒ‰ä»·å€¼å’Œé‡é‡çš„æ¯”ï¼Œéé€’å¢æ’åº:\n");
     three(v,w,n);
     return 0;
 }
