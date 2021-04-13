@@ -73,6 +73,36 @@ class Frame1(wx.Frame):
     def OnclickBut_no(self,event):
         self.choice_text.SetValue("")
 
+class Frame2(wx.Frame):
+    def __init__(self,parent,id):
+        wx.Frame.__init__(self,parent,id,title = "价值重量比非递增排序",pos=(100,100),size=(400,900))
+        #创建面板
+        firstPan = wx.Panel(self)
+        #数据处理
+        for i in range(len(weight)):
+            rate=weight[i]/value[i]
+            ratio.append(rate)
+            for i in range(len(weight)):
+                for j in range(len(value)):
+                    if i==j:
+                          for k in range(len(ratio)):
+                              if j==k:
+                                  t=[weight[i],value[j],ratio[k]]
+                                  packbag.append(t)
+        message=sorted(packbag,key=lambda x:x[2],reverse=True)
+        #for i in range(len(message)):
+        #    print("---")
+        title = wx.StaticText(firstPan,label="价值重量比非递增排序",pos=(140,20))
+        title = wx.StaticText(firstPan,label="重量        价值         价值重量之比",pos=(120,40))
+        
+        count=60
+        
+        for i in range(len(message)):
+            date = wx.StaticText(firstPan,label="%8d      %8d        %8f"%(message[i][0],message[i][1],message[i][2]),pos=(95,count))
+            #date = wx.StaticText(firstPan,label="%d"%message[i],pos=(0,count))
+            count=count+20
+            
+
         
 if __name__=='__main__':
     app = wx.App()
