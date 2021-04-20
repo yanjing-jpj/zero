@@ -3,11 +3,12 @@ import matplotlib.pyplot as plt
 import time
 import random
 import sqlite3
-weight=[]
-value=[]
-ratio=[]
-packbag=[]
+weight=[]       #物品重量
+value=[]        #物品价值
+ratio=[]        #价值重量比
+packbag=[]      #背包
 message=[]
+#读取文件信息
 def read():
     fname = 'data.txt'
     with open(fname, 'r') as f:
@@ -19,7 +20,7 @@ def read():
                 weight.append(int(s[i][j]))
             else:
                 value.append(int(s[i][j]))
-
+#主界面
 class Frame1(wx.Frame):
     def __init__(self,parent,id):
         wx.Frame.__init__(self,parent,id,title = "D{0-1} KP",pos=(100,100),size=(400,300))
@@ -48,24 +49,24 @@ class Frame1(wx.Frame):
             wx.MessageBox(message)
         else:
             read()
-            if self.choice == "1":
+            if self.choice == "1":      #散点图的绘画
                 plt.scatter(weight,value)
                 plt.xlabel("weight")		#x轴标签
                 plt.ylabel("value")		#y轴标签
                 plt.tick_params(axis='both')	#x,y轴都有刻度
                 plt.savefig('3.2.png')		#保存图片，一定要在show之前保存图片，否则保存的图片就为空白
                 plt.show()
-            elif self.choice == "2":
+            elif self.choice == "2":        #价值重量比非递增排序
                 app = wx.App()
                 frame2 = Frame2(parent=None,id=1)
                 frame2.Show()
                 app.MainLoop
-            elif self.choice == "3":
+            elif self.choice == "3":        #动态规划算法--最优解
                 app = wx.App()
                 frame3 = Frame3(parent=None,id=1)
                 frame3.Show()
                 app.MainLoop()
-            elif self.choice == "4":
+            elif self.choice == "4":        #遗传算法
                 app = wx.App()
                 frame4 = Frame4(parent=None,id=1)
                 frame4.Show()
@@ -90,13 +91,9 @@ class Frame2(wx.Frame):
                                   t=[weight[i],value[j],ratio[k]]
                                   packbag.append(t)
         message=sorted(packbag,key=lambda x:x[2],reverse=True)
-        #for i in range(len(message)):
-        #    print("---")
         title = wx.StaticText(firstPan,label="价值重量比非递增排序",pos=(140,20))
         title = wx.StaticText(firstPan,label="重量        价值         价值重量之比",pos=(120,40))
-        
         count=60
-        
         for i in range(len(message)):
             date = wx.StaticText(firstPan,label="%8d      %8d        %8f"%(message[i][0],message[i][1],message[i][2]),pos=(95,count))
             #date = wx.StaticText(firstPan,label="%d"%message[i],pos=(0,count))
@@ -142,7 +139,6 @@ class Frame4(wx.Frame):
         
         #算法
         # 记录上一代的最大值
-       
         # 随机精选出四个个体
         # 用来初始化整个种群
         chromosomes_state1 = '100100100100100100100100100100'
@@ -158,13 +154,10 @@ class Frame4(wx.Frame):
              
         # 重量界限
         WEIGHT_LIMIT = 10149
-             
         # 染色体长度
         CHROMOSOME_SIZE =6
-             
         # 精选次数
         SELECT_NUMBER = 4
-             
         # 记录上一代和上上一代的适应函数的差
         diff_last = 10000
             # 计算种群的适应度
@@ -203,7 +196,6 @@ class Frame4(wx.Frame):
                 max_last = max_current
                 return False
              
-             
             # 精选下一代
             # 先淘汰掉不能适应环境的，即淘汰重量大于80的
             # 随机从上一代能适应环境的种群个体中选出几个个体进行下一代的繁衍
@@ -222,7 +214,6 @@ class Frame4(wx.Frame):
                 select_index[j] += 1
             return select_index
              
-             
             # 产生下一代
             # 从精选的四个个体里面依次取一个个体，再从能适应环境的个体中随机的取一个个体
             # 交配产生新的下一代
@@ -240,9 +231,7 @@ class Frame4(wx.Frame):
                     chromosomes_states_new.append(chromosomes_state[:pos]+chromosomes_state_x[pos:])
             return chromosomes_states_new
              
-             
-         
-            # 让种群最多繁衍100代
+        # 让种群最多繁衍100代
         n = 100
         cloum = 40
         title = wx.StaticText(firstPan,label="当前种群的适应度",pos=(140,20))
